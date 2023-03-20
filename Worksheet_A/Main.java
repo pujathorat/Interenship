@@ -1,78 +1,65 @@
-package com.java.leftviewbyQueue;
+package com.java.BalancedBrackets;
 
-import java.util.ArrayDeque;
-import java.util.Queue;
- 
-// A class to store a binary tree node
-class Node
-{
-    int key;
-    Node left = null, right = null;
- 
-    Node(int key) {
-        this.key = key;
-    }
-}
+
+import java.util.Stack;
  
 class Main
 {
-    // Iterative function to print the left view of a given binary tree
-    public static void leftView(Node root)
+    // Function to check if the given expression is balanced or not
+    public static boolean isBalanced(String exp)
     {
-        // return if the tree is empty
-        if (root == null) {
-            return;
+        // base case: length of the expression must be even
+        if (exp == null || exp.length() % 2 == 1) {
+            return false;
         }
  
-        // create an empty queue and enqueue the root node
-        Queue<Node> queue = new ArrayDeque<>();
-        queue.add(root);
+        // take an empty stack of characters
+        Stack<Character> stack = new Stack<>();
  
-        // to store the current node
-        Node curr;
- 
-        // loop till queue is empty
-        while (!queue.isEmpty())
+        // traverse the input expression
+        for (char c: exp.toCharArray())
         {
-            // calculate the total number of nodes at the current level
-            int size = queue.size();
-            int i = 0;
+            // if the current character in the expression is an opening brace,
+            // push it into the stack
+            if (c == '{' || c == '{' || c == '[' || c=='[' || c=='(' || c==')') {
+                stack.push(c);
+            }
  
-            // process every node of the current level and enqueue their
-            // non-empty left and right child
-            while (i++ < size)
+            // if the current character in the expression is a closing brace
+            if (c == ')' ||c == ')' ||c == ']' || c == ')' ||c == '}' || c == '}')
             {
-                curr = queue.poll();
- 
-                // if this is the first node of the current level, print it
-                if (i == 1) {
-                    System.out.print(curr.key + " ");
+                // return false if a mismatch is found (i.e., if the stack is empty,
+                // the expression cannot be balanced since the total number of opening
+                // braces is less than the total number of closing braces)
+                if (stack.empty()) {
+                    return false;
                 }
  
-                if (curr.left != null) {
-                    queue.add(curr.left);
-                }
+                // pop character from the stack
+                Character top = stack.pop();
  
-                if (curr.right != null) {
-                    queue.add(curr.right);
+                // if the popped character is not an opening brace or does not pair
+                // with the current character of the expression
+                if ((top == '(' && c != ')') || (top == '{' && c != '}')
+                        || (top == '[' && c != ']')) {
+                    return false;
                 }
             }
         }
+ 
+        // the expression is balanced only when the stack is empty at this point
+        return stack.empty();
     }
  
     public static void main(String[] args)
     {
-        Node root = new Node(1);
-        root.left = new Node(2);
-        root.right = new Node(3);
-        root.left.left=new Node(4);
-        root.left.right = new Node(5);
-        root.right.left = new Node(6);
-        root.right.right = new Node(7);
-        root.right.left.left = new Node(8);
-        root.right.left.right = new Node(9);
-        
-   System.out.println("The left view of Binary tree is:");
-        leftView(root);
+        String exp = "{{[[(())])}}";
+ 
+        if (isBalanced(exp)) {
+            System.out.println("The expression is balanced");
+        }
+        else {
+            System.out.println("The expression is not balanced");
+        }
     }
 }
