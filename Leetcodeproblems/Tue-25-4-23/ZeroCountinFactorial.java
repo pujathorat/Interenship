@@ -27,7 +27,7 @@ package com.java.Leetcodeproblems;
 	    // Driver Code
 	    public static void main(String[] args)
 	    {
-	        int n = 100;
+	        int n = 80;
 	        System.out.println("Count of trailing 0s in " + n
 	                           + "! is "
 	                           + findTrailingZeros(n));
